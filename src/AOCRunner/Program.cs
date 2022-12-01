@@ -64,7 +64,11 @@ static ServiceProvider GetDiContainer(IConfigurationRoot config)
 
     foreach (var day in days)
     {
-        sc.Add(new ServiceDescriptor(typeof(AdventOfCodeDay), day, ServiceLifetime.Transient));
+        sc.Add(
+            new ServiceDescriptor(
+                typeof(AdventOfCodeDay),
+                day,
+                ServiceLifetime.Transient));
     }
 
     var sp = sc.BuildServiceProvider();
