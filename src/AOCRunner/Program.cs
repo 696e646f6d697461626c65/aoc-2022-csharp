@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 using AOC2022.Domain;
 using AOC2022.Utilities;
@@ -48,6 +48,8 @@ static IConfigurationRoot GetConfiguration()
     var builder = new ConfigurationBuilder();
 
     builder.AddUserSecrets(Assembly.GetEntryAssembly()!);
+
+    builder.AddEnvironmentVariables("AOC2022_");
 
     return builder.Build();
 }
