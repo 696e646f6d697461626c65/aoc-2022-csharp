@@ -11,6 +11,9 @@ indent_size = 2
 # C# files
 [*.cs]
 
+#### Custom rules
+csharp_style_namespace_declarations = file_scoped:warning
+
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
