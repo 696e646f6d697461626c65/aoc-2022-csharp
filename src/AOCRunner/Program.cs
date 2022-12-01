@@ -58,7 +58,7 @@ static ServiceProvider GetDiContainer(IConfigurationRoot config)
 {
     var sc = new ServiceCollection();
 
-    sc.AddInputRetrievers(config);
+    sc.AddInputRetriever(config);
 
     var days = AssemblyScanning.RetrieveSubclassesOf<AdventOfCodeDay>();
 

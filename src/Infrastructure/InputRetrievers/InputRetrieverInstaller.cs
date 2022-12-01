@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class InputRetrieverInstaller
 {
-    public static IServiceCollection AddInputRetrievers(
+    public static IServiceCollection AddInputRetriever(
         this IServiceCollection services,
         IConfiguration config)
     {
