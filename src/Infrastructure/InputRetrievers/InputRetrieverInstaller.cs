@@ -11,17 +11,36 @@ public static class InputRetrieverInstaller
         this IServiceCollection services,
         IConfiguration config)
     {
+        var shouldUseSampleInputRetriever = config
+            .GetRequiredSection(InputRetrieverConfiguration.Name)
+                .Get<InputRetrieverConfiguration>()!
+                .UseSampleInputRetriever;
+
+        if (shouldUseSampleInputRetriever)
+        {
+            services.AddSampleInputRetriever();
+            return services;
+        }
+
         services.AddHttpInputRetriever(config);
 
         return services;
     }
 
-    internal static IServiceCollection AddHttpInputRetriever(
+    public static IServiceCollection AddSampleInputRetriever(
+        this IServiceCollection services)
+    {
+        services.AddSingleton<IInputRetriever, SampleInputRetriever>();
+        return services;
+    }
+
+    public static IServiceCollection AddHttpInputRetriever(
         this IServiceCollection services,
         IConfiguration config)
     {
         var sessionCookie = config
-                    .GetRequiredSection("HttpInputRetriever")?
+            .GetRequiredSection(InputRetrieverConfiguration.Name)
+                .GetRequiredSection(HttpInputRetrieverConfiguration.Name)?
                     .Get<HttpInputRetrieverConfiguration>()?
                     .SessionCookie;
 
@@ -29,8 +48,10 @@ public static class InputRetrieverInstaller
 
         services
             .AddHttpClient<HttpInputRetriever>()
-            .ConfigureHttpClient(configure => configure.DefaultRequestHeaders
-                .Add("Cookie", new string[] { sessionCookie }));
+            .ConfigureHttpClient(
+                (configure) =>
+                    configure.DefaultRequestHeaders
+                        .Add("Cookie", new string[] { sessionCookie }));
 
         services.AddTransient<IInputRetriever, HttpInputRetriever>(sp =>
             sp.GetRequiredService<HttpInputRetriever>());

@@ -11,17 +11,55 @@ public class Day01 : AdventOfCodeDay
 
     public Day01(IInputRetriever retriever)
     {
+
         Number = new ValidDayNumber(1);
         _retriever = retriever;
     }
 
-    protected override Task<string> SolveTaskOne()
+    private ValueTask<List<FoodCarryingElf>> SortFoodCarryingElves()
     {
-        return Task.FromResult("Not yet");
+        var elvesByCalories = new List<FoodCarryingElf>();
+        return _retriever.GetInputForDay(Number)
+            .AggregateAsync(
+                (elvesByCalories, currentElf: new FoodCarryingElf(calories: 0)),
+                (accumulator, calories) =>
+                {
+                    if (string.IsNullOrWhiteSpace(calories))
+                    {
+                        accumulator.elvesByCalories.Add(accumulator.currentElf);
+                        accumulator.currentElf = new FoodCarryingElf(calories: 0);
+                        return accumulator;
+                    }
+                    accumulator.currentElf = new FoodCarryingElf(
+                        int.Parse(calories) + accumulator.currentElf.Calories);
+                    return accumulator;
+                },
+                accumulator =>
+                {
+                    accumulator.elvesByCalories.Add(accumulator.currentElf);
+                    return accumulator.elvesByCalories;
+                });
     }
 
-    protected override Task<string> SolveTaskTwo()
+    protected async override Task<string> SolveTaskOne()
     {
-        return Task.FromResult("Not yet");
+        return (await SortFoodCarryingElves())
+            .Max().Calories.ToString();
+    }
+
+    protected override async Task<string> SolveTaskTwo()
+    {
+        return (await SortFoodCarryingElves())
+            .OrderDescending()
+            .Take(3)
+            .Select(e => e.Calories)
+            .Aggregate(
+                0,
+                (totalCalories, elfCalories) =>
+                {
+                    Console.WriteLine($"total: {totalCalories}, current: {elfCalories}");
+                    return totalCalories + elfCalories;
+                },
+                (totalCalories) => totalCalories.ToString());
     }
 }

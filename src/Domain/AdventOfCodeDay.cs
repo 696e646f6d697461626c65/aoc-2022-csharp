@@ -10,7 +10,10 @@ public abstract class AdventOfCodeDay
 
     public async Task<DayResult> GetResult()
     {
-        return new DayResult(Number, await SolveTaskOne(), await SolveTaskTwo());
+        return new DayResult(
+            Number,
+            await SolveTaskOne(),
+            await SolveTaskTwo());
     }
 
     public override string ToString()
