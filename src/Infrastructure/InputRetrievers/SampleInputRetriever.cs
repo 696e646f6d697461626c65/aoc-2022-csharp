@@ -29,6 +29,15 @@ public class SampleInputRetriever : IInputRetriever
             "A Y",
             "B X",
             "C Z"
+        },
+        [new ValidDayNumber(3)] = new[]
+        {
+            "vJrwpWtwJgWrhcsFMMfFFhFp",
+            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+            "PmmdzqPrVvPwwTWBwg",
+            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+            "ttgJtRGJQctTZtZT",
+            "CrZsJsPPZsGzwwsLwLmpwMDw"
         }
     };
 
